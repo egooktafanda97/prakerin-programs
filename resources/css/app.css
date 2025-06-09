@@ -1,0 +1,56 @@
+@import "tailwindcss";
+.gridjs-wrapper {
+    box-shadow: none !important;
+    border: none !important;
+    border-radius: 0px;
+}
+
+.gridjs-footer {
+    box-shadow: none !important;
+    border: none !important;
+    padding: 0.5rem !important;
+    background-color: #101828;
+    font-size: 0.8em !important;
+    color: #fff;
+    border-radius: 0;
+}
+
+.gridjs-tr {
+    border-radius: 0 !important;
+}
+
+.gridjs-pagination {
+    color: #fff;
+}
+
+.gridjs-table {
+    font-family: "Poppins", sans-serif;
+    font-weight: 300;
+    font-style: normal;
+}
+
+td.gridjs-td {
+    padding: 0.4rem !important;
+}
+
+.gridjs-tr > th {
+    padding: 0.5rem !important;
+    background-color: #101828;
+    font-size: 0.8em !important;
+    color: #fff;
+}
+
+.gridjs-tr > td {
+    padding: 0.5rem !important;
+    font-size: 0.8em !important;
+}
+
+.gridjs-input.gridjs-search-input {
+    padding: 0.5rem;
+    height: 30px !important;
+    border: 1px solid gray;
+}
+
+.gridjs-pages {
+    color: #262626 !important;
+}
