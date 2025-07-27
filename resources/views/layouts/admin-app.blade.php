@@ -9,6 +9,8 @@
     <meta content="width=device-width, initial-scale=1.0, user-scalable=no" name="viewport">
     <meta content="Minimal Admin & Dashboard Template" name="description">
     <meta content="StarCode Kh" name="author">
+    {{-- csrf-token --}}
+    <meta content="{{ csrf_token() }}" name="csrf-token">
     <!-- App favicon -->
     <link href="{{ asset('') }}admin/assets/images/favicon.ico" rel="shortcut icon">
     {{-- <script src="{{ asset('') }}admin/assets/js/layout.js"></script> --}}

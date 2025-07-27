@@ -21,6 +21,7 @@ use App\Http\Controllers\InstrukturController;
 use App\Http\Controllers\PenempatanPrakerinController;
 use App\Http\Controllers\LogbookPrakerinController;
 use App\Http\Controllers\LoginController;
+use App\Http\Controllers\PengajuanPenempatanController;
 use App\Http\Controllers\PenilaianController;
 use App\Http\Controllers\WebsiteController;
 
@@ -87,3 +88,18 @@ Route::prefix('nilai-siswa')->group(function () {
  * shoe nilai table siswa
  */
 Route::get('/tabel-nilai-siswa', [WebsiteController::class, 'showTableNilai'])->name('tabel-nilai-siswa.show');
+
+/**
+ * Pengajuan Penempatan
+ */
+Route::group(['prefix' => 'permohonan-penempatan'], function () {
+    Route::get('/', [PengajuanPenempatanController::class, 'index'])->name('permohonan-penempatan.index');
+    Route::get('/daftar-pengajuan', [PengajuanPenempatanController::class, 'daftarPengajuan'])->name('permohonan-penempatan.daftar-pengajuan');
+    Route::get('/create', [PengajuanPenempatanController::class, 'create'])->name('permohonan-penempatan.create');
+    Route::post('/store', [PengajuanPenempatanController::class, 'store'])->name('permohonan-penempatan.store');
+    // update pengajuan by admin updatePengajuan
+    Route::post('/update-pengajuan/{id}', [PengajuanPenempatanController::class, 'updatePengajuan'])->name('permohonan-penempatan.update-pengajuan');
+    Route::get('/{id}/edit', [PengajuanPenempatanController::class, 'edit'])->name('permohonan-penempatan.edit');
+    Route::put('/update/{id}', [PengajuanPenempatanController::class, 'update'])->name('permohonan-penempatan.update');
+    Route::post('/destroy/{id}', [PengajuanPenempatanController::class, 'destroy'])->name('permohonan-penempatan.destroy');
+});
