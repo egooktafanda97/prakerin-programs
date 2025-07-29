@@ -51,7 +51,7 @@
                 </div>
 
                 {{-- Guru --}}
-                <div class="mb-4">
+                {{-- <div class="mb-4">
                     <label class="block text-sm font-medium text-gray-700" for="guru_id">Guru Pembimbing</label>
                     <select class="mt-1 block w-full rounded border border-gray-300 p-2" id="guru_id" name="guru_id">
                         <option value="">-- Pilih Guru --</option>
@@ -63,10 +63,10 @@
                     @error('guru_id')
                         <p class="text-red-500 text-xs italic">{{ $message }}</p>
                     @enderror
-                </div>
+                </div> --}}
 
                 {{-- Instruktur --}}
-                <div class="mb-4">
+                {{-- <div class="mb-4">
                     <label class="block text-sm font-medium text-gray-700" for="instruktur_id">Instruktur</label>
                     <select class="mt-1 block w-full rounded border border-gray-300 p-2" id="instruktur_id"
                         name="instruktur_id">
@@ -79,11 +79,11 @@
                     @error('instruktur_id')
                         <p class="text-red-500 text-xs italic">{{ $message }}</p>
                     @enderror
-                </div>
+                </div> --}}
 
                 {{-- Tanggal Mulai --}}
 
-                <div class="mb-4">
+                {{-- <div class="mb-4">
                     <label class="block text-gray-700 text-sm font-bold mb-2" for="tanggal_mulai">Tanggal Mulai:</label>
                     <input
                         class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
@@ -102,7 +102,7 @@
                     @error('tanggal_selesai')
                         <p class="text-red-500 text-xs italic">{{ $message }}</p>
                     @enderror
-                </div>
+                </div> --}}
 
                 {{-- <div class="mb-4">
                     <label class="block text-gray-700 text-sm font-bold mb-2" for="alasan">Alasan (Opsional):</label>

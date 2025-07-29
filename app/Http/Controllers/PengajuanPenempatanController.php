@@ -46,8 +46,12 @@ class PengajuanPenempatanController extends Controller
             ->orderBy('tanggal_pengajuan', 'asc') // Urutkan berdasarkan tanggal pengajuan terbaru
             ->latest()
             ->get();
+        // Ambil data yang diperlukan untuk dropdown/select di form
+        $perusahaan = Perusahaan::all();
+        $gurus = Guru::all();
+        $instrukturs = Instruktur::all();
 
-        return view('pages.permohonan-penempatan.daftar-pengajuan', compact('pengajuanPenempatans'));
+        return view('pages.permohonan-penempatan.daftar-pengajuan', compact('pengajuanPenempatans', 'perusahaan', 'gurus', 'instrukturs'));
     }
     /**
      * Menampilkan formulir untuk membuat pengajuan penempatan baru.
@@ -110,22 +114,29 @@ class PengajuanPenempatanController extends Controller
         $request->validate([
             'alasan' => 'nullable|string|max:255',
             'status' => 'required|in:diterima,ditolak,menunggu',
+            'guru_id' => 'nullable',
+            'instruktur_id' => 'nullable',
+            'tanggal_mulai' => 'nullable|date',
+            'tanggal_selesai' => 'nullable|date',
         ]);
-        $data = $request->only(['status', 'alasan']);
+        $data = $request->only(['status', 'alasan', 'guru_id', 'instruktur_id', 'tanggal_mulai', 'tanggal_selesai']);
         if ($data['status'] === 'diterima') {
             $data['tanggal_diterima'] = now();
 
-            $data = [
+            $xdata = [
                 "tahun_ajaran" => $pengajuanPenempatan->tahun_ajaran,
                 "siswa_id" => $pengajuanPenempatan->siswa_id,
                 "perusahaan_id" => $pengajuanPenempatan->perusahaan_id,
-                "guru_id" => $pengajuanPenempatan->guru_id,
-                "instruktur_id" => $pengajuanPenempatan->instruktur_id,
-                "tanggal_mulai" => $pengajuanPenempatan->tanggal_mulai,
-                "tanggal_selesai" => $pengajuanPenempatan->tanggal_selesai,
-                "status" => $pengajuanPenempatan->aktif,
+                "guru_id" => $request->guru_id,
+                "instruktur_id" => $request->instruktur_id,
+                "tanggal_mulai" => $request->tanggal_mulai,
+                "tanggal_selesai" => $request->tanggal_selesai,
+                "status" => 'aktif' // Status aktif untuk penempatan prakerin
             ];
-            PenempatanPrakerin::create($data);
+            $cekPengajuan = PenempatanPrakerin::where('siswa_id', $pengajuanPenempatan->siswa_id)
+                ->where('status', 'aktif')
+                ->first();
+            if (!$cekPengajuan)    PenempatanPrakerin::create($xdata);
         } elseif ($data['status'] === 'ditolak') {
             $data['tanggal_ditolak'] = now();
         }
@@ -195,14 +206,14 @@ class PengajuanPenempatanController extends Controller
     /**
      * Menghapus pengajuan penempatan tertentu dari database.
      */
-    public function destroy(string $id)
+    public function destroy($id)
     {
         $pengajuanPenempatan = PengajuanPenempatan::findOrFail($id);
 
         // Hapus file pendukung jika ada
-        if ($pengajuanPenempatan->file_pendukung) {
-            Storage::delete('public/files/' . $pengajuanPenempatan->file_pendukung);
-        }
+        // if ($pengajuanPenempatan->file_pendukung) {
+        //     Storage::delete('public/files/' . $pengajuanPenempatan->file_pendukung);
+        // }
 
         $pengajuanPenempatan->delete();
 

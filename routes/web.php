@@ -101,5 +101,5 @@ Route::group(['prefix' => 'permohonan-penempatan'], function () {
     Route::post('/update-pengajuan/{id}', [PengajuanPenempatanController::class, 'updatePengajuan'])->name('permohonan-penempatan.update-pengajuan');
     Route::get('/{id}/edit', [PengajuanPenempatanController::class, 'edit'])->name('permohonan-penempatan.edit');
     Route::put('/update/{id}', [PengajuanPenempatanController::class, 'update'])->name('permohonan-penempatan.update');
-    Route::post('/destroy/{id}', [PengajuanPenempatanController::class, 'destroy'])->name('permohonan-penempatan.destroy');
+    Route::delete('/destroy/{id}', [PengajuanPenempatanController::class, 'destroy'])->name('permohonan-penempatan.destroy');
 });

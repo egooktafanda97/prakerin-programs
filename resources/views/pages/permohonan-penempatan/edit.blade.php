@@ -51,8 +51,7 @@
                     @enderror
                 </div>
 
-                {{-- Guru --}}
-                <div class="form-group">
+                {{-- <div class="form-group">
                     <label class="block text-sm font-medium text-gray-700" for="guru_id">Guru Pembimbing</label>
                     <select class="mt-1 block w-full rounded border border-gray-300 p-2" id="guru_id" name="guru_id">
                         <option value="">-- Pilih Guru --</option>
@@ -67,7 +66,6 @@
                     @enderror
                 </div>
 
-                {{-- Instruktur --}}
                 <div class="form-group">
                     <label class="block text-sm font-medium text-gray-700" for="instruktur_id">Instruktur</label>
                     <select class="mt-1 block w-full rounded border border-gray-300 p-2" id="instruktur_id"
@@ -105,7 +103,7 @@
                     @error('tanggal_selesai')
                         <p class="text-red-500 text-xs italic">{{ $message }}</p>
                     @enderror
-                </div>
+                </div> --}}
 
 
                 <div class="form-group">

@@ -44,6 +44,9 @@
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 
     <script>
+        const gurus = @json($gurus);
+        const instrukturs = @json($instrukturs);
+
         function getData() {
             try {
                 // Pastikan data diubah menjadi JSON string yang valid
@@ -183,26 +186,86 @@
         @endif
 
         // Function to show SweetAlert2 dialog for status change
+        // Function to show SweetAlert2 dialog for status change
+        // Function to show SweetAlert2 dialog for status change
         async function showStatusChangeDialog(id, currentStatus, currentAlasan) {
+            // Dynamically generate options for Guru Pembimbing
+            const guruOptions = gurus.map(guru => `
+                <option value="${guru.id}" >
+                    ${guru.nama ?? 'N/A'}
+                </option>
+            `).join('');
+
+            // Dynamically generate options for Instruktur
+            const instrukturOptions = instrukturs.map(instruktur => `
+        <option value="${instruktur.id}" >
+            ${instruktur.nama ?? 'N/A'}
+        </option>
+    `).join('');
+
             const {
                 value: formValues
             } = await Swal.fire({
                 title: 'Ubah Status Pengajuan',
-                html: `<select id="swal-input1" class="swal2-input">
-                        <option value="menunggu" ${currentStatus === 'menunggu' ? 'selected' : ''}>Menunggu</option>
-                        <option value="diterima" ${currentStatus === 'diterima' ? 'selected' : ''}>Diterima</option>
-                        <option value="ditolak" ${currentStatus === 'ditolak' ? 'selected' : ''}>Ditolak</option>
-                    </select>` +
-                    `<textarea id="swal-input2" class="swal2-textarea" placeholder="Alasan (opsional)">${currentAlasan}</textarea>`,
+                html: `
+            <div class="mb-4 text-left">
+                <label class="block text-sm font-medium text-gray-700 swal2-label" for="swal-status">Status</label>
+                <select id="swal-status" class="swal2-select swal2-input">
+                    <option value="menunggu" ${currentStatus === 'menunggu' ? 'selected' : ''}>Menunggu</option>
+                    <option value="diterima" ${currentStatus === 'diterima' ? 'selected' : ''}>Diterima</option>
+                    <option value="ditolak" ${currentStatus === 'ditolak' ? 'selected' : ''}>Ditolak</option>
+                </select>
+            </div>
+
+            <div class="mb-4 text-left">
+                <label class="block text-sm font-medium text-gray-700 swal2-label" for="swal-guru_id">Guru Pembimbing</label>
+                <select id="swal-guru_id" class="swal2-select swal2-input">
+                    <option value="">-- Pilih Guru --</option>
+                    ${guruOptions}
+                </select>
+            </div>
+
+            <div class="mb-4 text-left">
+                <label class="block text-sm font-medium text-gray-700 swal2-label" for="swal-instruktur_id">Instruktur</label>
+                <select id="swal-instruktur_id" class="swal2-select swal2-input">
+                    <option value="">-- Pilih Instruktur --</option>
+                    ${instrukturOptions}
+                </select>
+            </div>
+
+            <div class="mb-4 text-left">
+                <label class="block text-sm font-medium text-gray-700 swal2-label" for="swal-tanggal_mulai">Tanggal Mulai:</label>
+                <input type="date" id="swal-tanggal_mulai" class="swal2-input" value="">
+            </div>
+
+            <div class="mb-4 text-left">
+                <label class="block text-sm font-medium text-gray-700 swal2-label" for="swal-tanggal_selesai">Tanggal Selesai:</label>
+                <input type="date" id="swal-tanggal_selesai" class="swal2-input" value="">
+            </div>
+
+            <div class="mb-4 text-left">
+                <label class="block text-sm font-medium text-gray-700 swal2-label" for="swal-alasan">Alasan (opsional)</label>
+                <textarea id="swal-alasan" class="swal2-textarea" placeholder="Alasan (opsional)"></textarea>
+            </div>
+        `,
                 focusConfirm: false,
                 showCancelButton: true,
                 confirmButtonText: 'Simpan',
                 cancelButtonText: 'Batal',
                 preConfirm: () => {
-                    const status = document.getElementById('swal-input1').value;
-                    const alasan = document.getElementById('swal-input2').value;
+                    const status = document.getElementById('swal-status').value;
+                    const guru_id = document.getElementById('swal-guru_id').value;
+                    const instruktur_id = document.getElementById('swal-instruktur_id').value;
+                    const tanggal_mulai = document.getElementById('swal-tanggal_mulai').value;
+                    const tanggal_selesai = document.getElementById('swal-tanggal_selesai').value;
+                    const alasan = document.getElementById('swal-alasan').value;
+
                     return {
                         status: status,
+                        guru_id: guru_id,
+                        instruktur_id: instruktur_id,
+                        tanggal_mulai: tanggal_mulai,
+                        tanggal_selesai: tanggal_selesai,
                         alasan: alasan
                     };
                 }
@@ -210,7 +273,6 @@
 
             if (formValues) {
                 // Send AJAX request to update status
-                // Gunakan rute yang benar sesuai definisi di web.php untuk update status
                 const url = `/permohonan-penempatan/update-pengajuan/${id}`;
                 const csrfToken = document.querySelector('meta[name="csrf-token"]').getAttribute('content');
 
@@ -219,7 +281,7 @@
                         method: 'POST',
                         headers: {
                             'Content-Type': 'application/json',
-                            'X-CSRF-TOKEN': csrfToken // Include CSRF token
+                            'X-CSRF-TOKEN': csrfToken
                         },
                         body: JSON.stringify(formValues)
                     });
@@ -236,7 +298,6 @@
                             backgroundColor: "#4CAF50",
                             stopOnFocus: true,
                         }).showToast();
-                        // Reload the page or update the grid data to reflect changes
                         location.reload();
                     } else {
                         Toastify({
